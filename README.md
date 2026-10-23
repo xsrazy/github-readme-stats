@@ -171,7 +171,7 @@ Every card accepts the parameters below. Priority is always: explicit parameter 
 | Parameter | Default | Notes |
 | --- | --- | --- |
 | `username` | `xsrazy` | GitHub username to chart |
-| `theme` | `github-dark` | Any theme from the list below; underscore and hyphen spellings both work |
+| `theme` | `github-dark` | Any theme from the list below; use the exact theme name |
 | `bg_color` | theme | Hex (3, 6, or 8 digits; 8 digits adds an alpha channel) or a gradient spec `angle,color1,color2,...` with up to 6 colors, for example `bg_color=30,e96443,904e95` |
 | `title_color` | theme | Hex color for the card title |
 | `text_color` | theme | Hex color for body text |
@@ -195,7 +195,7 @@ Every card accepts the parameters below. Priority is always: explicit parameter 
 
 ### Themes (100)
 
-The suite ships 100 canonical themes. Both spellings of every name work: `tokyo-night` and `tokyo_night` resolve to the same palette. Popular picks: `tokyo-night`, `github-dark`, `dracula`, `nord`, `gruvbox`, `onedark`, `catppuccin-mocha`, `rose-pine`, `synthwave_84`, and `transparent` (fully transparent background).
+The suite ships exactly 100 themes, each with one canonical name and a unique palette. Theme names are exact: use the names listed in the gallery, with no alternate spellings. Popular picks: `tokyo-night`, `github-dark`, `dracula`, `nord`, `gruvbox`, `onedark`, `catppuccin-mocha`, `rose-pine`, `synthwave`, and `transparent` (fully transparent background).
 
 The five original themes of this project (`tokyo-night`, `github-dark`, `react`, `radical`, `highcontrast`) keep their exact original palettes.
 

@@ -8,9 +8,8 @@
 // kept with their exact original values, and extra well-known
 // palettes such as the Catppuccin and Rose Pine families.
 //
-// Both the hyphen and underscore spellings of every name resolve to
-// the same palette; those aliases are generated programmatically in
-// buildThemes() below and are not separate themes.
+// Theme names are exact. There are no spelling aliases and no duplicate
+// palettes: the catalog contains only the 100 canonical entries below.
 
 const PALETTES = {
   "algolia": {"bg":"#050f2c","border":"#2dde98","title":"#00aeff","line":"#2dde98","point":"#2dde98","grid":"#2dde98","text":"#ffffff"},
@@ -115,31 +114,6 @@ const PALETTES = {
   "yeblu": {"bg":"#002046","border":"#ffff00","title":"#ffff00","line":"#ffff00","point":"#ffff00","grid":"#ffff00","text":"#ffffff"},
 };
 
-// Names that are neither a canonical name nor its spelling variant
-// (for example github-light is the same palette as github).
-const EXTRA_ALIASES = {
-  "github-light": "github",
-  "github_light": "github",
-  "synthwave_84": "synthwave",
-};
-
-function spellingVariant(name) {
-  return name.replace(/[-_]/g, (c) => (c === "-" ? "_" : "-"));
-}
-
-function buildThemes() {
-  const map = {};
-  for (const [name, palette] of Object.entries(PALETTES)) {
-    map[name] = palette;
-    const alt = spellingVariant(name);
-    if (alt !== name && !(alt in PALETTES) && !(alt in map)) map[alt] = palette;
-  }
-  for (const [alias, target] of Object.entries(EXTRA_ALIASES)) {
-    if (!(alias in map)) map[alias] = PALETTES[target];
-  }
-  return map;
-}
-
-const THEMES = buildThemes();
+const THEMES = { ...PALETTES };
 
 module.exports = { PALETTES, THEMES };

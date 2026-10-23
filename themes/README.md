@@ -2,7 +2,7 @@
 
 All 100 canonical themes of the GitHub Readme Stats card suite, each with its palette and a live preview rendered by the suite itself (the stats card for the project owner). Every theme also works on the graph, streak, languages, and trophy cards: swap the endpoint and keep the same `theme` value.
 
-Both spellings of every name work: `tokyo-night` and `tokyo_night` resolve to the same palette. Custom colors always win over the theme: see the [customization parameters](../README.md#customization) in the main README.
+Theme names are exact: use each name exactly as listed below, with no alternate spellings. Custom colors always win over the theme: see the [customization parameters](../README.md#customization) in the main README.
 
 | Theme | Background | Title | Accent | Text | Preview |
 | --- | --- | --- | --- | --- | --- |

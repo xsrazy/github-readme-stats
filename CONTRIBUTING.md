@@ -35,7 +35,7 @@ You need Git and Node.js (18 or newer). There are no runtime dependencies and no
 ## Adding a theme
 
 1. Add ONE entry to `PALETTES` in `themes/themes.js`, keyed by the canonical theme name. A palette uses the fields `bg`, `border`, `title`, `line`, `point`, `grid`, and `text` (hex colors). A palette may also carry `bgGradient` with an `angle` and `colors` list.
-2. Add only the canonical name. The hyphen and underscore spellings of every name resolve automatically in code (`buildThemes()` in the same file), so never add a second entry just to spell a name differently.
+2. Add only the canonical name, spelled exactly as it should be used. Do not add spelling variants, aliases, or a second palette with the same colors.
 3. Add a row for the theme to the gallery in `themes/README.md`: name, palette hex values, and a preview image that points at the live card, for example `https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=<name>`.
 4. Spot-check the new theme on at least two different cards before opening the PR.
 
