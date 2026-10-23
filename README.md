@@ -187,7 +187,7 @@ Every card accepts the parameters below. Priority is always: explicit parameter 
 | --- | --- | --- |
 | `/graph` | `days` | Days to chart, clamped to 7 to 365 (default 31) |
 | `/graph` | `line`, `point` | Hex colors for the chart line and data points |
-| `/stats`, `/streak`, `/trophy`, `/languages` | `ring_color` | Hex accent for key numbers; on `/streak` the alias `fire` is also accepted |
+| `/stats`, `/streak`, `/trophy`, `/languages` | `ring_color` | Hex accent for key numbers |
 | `/stats` | `hide` | Comma list of rows to hide: `stars`, `forks`, `contributions`, `prs`, `issues`, `followers`, `following`, `repos` |
 | `/languages` | `layout` | `normal` (default), `compact` (stacked bar, two-column legend), or `donut` (donut chart with legend) |
 | `/languages` | `langs_count` | Languages to show, 1 to 10 (default 6); the remainder is grouped as Other |
