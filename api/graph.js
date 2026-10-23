@@ -1,6 +1,6 @@
 // GitHub Readme Stats: renders a GitHub contribution activity graph as SVG.
 // Data source: github-contributions-api (jogruber) v4, public JSON, no auth.
-// Usage: /graph?username=xsrazy&theme=tokyo-night&days=31
+// Usage: /graph?username=xsrazy&theme=tokyo-night&days=31 (days: 7 to 365)
 // Customization: any theme from the suite catalog in lib/cards.js (the five
 // original themes below keep priority and their exact values), plus
 // bg_color, title_color, text_color, border_color, line, point,
@@ -158,7 +158,7 @@ module.exports = async (req, res) => {
   const theme = style.theme;
   let daysN = parseInt(q.days, 10);
   if (!Number.isFinite(daysN)) daysN = 31;
-  daysN = Math.min(90, Math.max(7, daysN));
+  daysN = Math.min(365, Math.max(7, daysN));
 
   let svg;
   try {

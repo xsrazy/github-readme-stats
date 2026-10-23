@@ -11,7 +11,7 @@ A self-hosted GitHub card suite that renders SVG cards for profile READMEs: an a
 
 ## About
 
-GitHub Readme Stats draws a smooth area chart of a GitHub user's daily contributions over the last 7 to 90 days and serves it as a plain SVG image that can be embedded anywhere, including a GitHub profile README. It was built after the popular third-party activity graph widget went offline (its deployment was disabled), leaving a broken image on the profile. This version runs on infrastructure the owner controls, has zero runtime dependencies, and needs no authentication or API keys. The companion cards (stats, streak, languages, trophy) share the same theming system, so a whole profile can run on one self-hosted suite instead of four different third-party services.
+GitHub Readme Stats draws a smooth area chart of a GitHub user's daily contributions over the last 7 to 365 days and serves it as a plain SVG image that can be embedded anywhere, including a GitHub profile README. It was built after the popular third-party activity graph widget went offline (its deployment was disabled), leaving a broken image on the profile. This version runs on infrastructure the owner controls, has zero runtime dependencies, and needs no authentication or API keys. The companion cards (stats, streak, languages, trophy) share the same theming system, so a whole profile can run on one self-hosted suite instead of four different third-party services.
 
 ## Features
 
@@ -145,24 +145,6 @@ https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&layout=donut
 
 ![Languages donut layout](https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&layout=donut&langs_count=8)
 
-### Trophy options
-
-Four tiles per row:
-
-```text
-https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&column=4
-```
-
-![Trophy column example](https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&column=4)
-
-Only high ranks:
-
-```text
-https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&rank=SSS,SS,S
-```
-
-![Trophy rank filter example](https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&rank=SSS,SS,S)
-
 ### Themes
 
 Three of the 100 themes on the stats card:
@@ -203,15 +185,13 @@ Every card accepts the parameters below. Priority is always: explicit parameter 
 
 | Card | Parameter | Notes |
 | --- | --- | --- |
-| `/graph` | `days` | Days to chart, clamped to 7 to 90 (default 31) |
+| `/graph` | `days` | Days to chart, clamped to 7 to 365 (default 31) |
 | `/graph` | `line`, `point` | Hex colors for the chart line and data points |
 | `/stats`, `/streak`, `/trophy`, `/languages` | `ring_color` | Hex accent for key numbers; on `/streak` the alias `fire` is also accepted |
 | `/stats` | `hide` | Comma list of rows to hide: `stars`, `forks`, `contributions`, `prs`, `issues`, `followers`, `following`, `repos` |
 | `/languages` | `layout` | `normal` (default), `compact` (stacked bar, two-column legend), or `donut` (donut chart with legend) |
 | `/languages` | `langs_count` | Languages to show, 1 to 10 (default 6); the remainder is grouped as Other |
 | `/languages` | `exclude_lang` | Comma list of languages to exclude, case-insensitive; percentages recompute over the rest |
-| `/trophy` | `column` | Tiles per row; the SVG wraps and grows taller as needed. Default: all tiles in one row |
-| `/trophy` | `rank` | Comma list of ranks to show, for example `rank=SSS,SS,S` |
 
 ### Themes (100)
 

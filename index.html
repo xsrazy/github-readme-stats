@@ -21,7 +21,7 @@
   <p>A self-hosted suite of GitHub profile README cards (activity graph, stats, streak, top languages, trophy) rendered as SVG images, ready to embed in a profile README. No auth, no tracking, cached at the edge.</p>
   <p>Usage:</p>
   <pre><code>/graph?username=xsrazy&amp;theme=tokyo-night&amp;days=31</code></pre>
-  <p>Parameters: <code>username</code> (GitHub username), <code>theme</code> (100 themes, for example tokyo-night, github-dark, dracula, nord, rose-pine), <code>days</code> (7 to 90, default 31).</p>
+  <p>Parameters: <code>username</code> (GitHub username), <code>theme</code> (100 themes, for example tokyo-night, github-dark, dracula, nord, rose-pine), <code>days</code> (7 to 365, default 31).</p>
   <img src="/graph?username=xsrazy&amp;theme=tokyo-night" alt="Xsrazy's Activity Graph" />
   <p><strong>New: the <a href="/builder" style="color:#7aa2f7;">theme builder</a></strong> composes fully custom card URLs visually, with live preview and copy buttons. Every card also accepts <code>bg_color</code> (hex or gradient), <code>title_color</code>, <code>text_color</code>, <code>border_color</code>, <code>hide_border</code>, <code>border_radius</code>, <code>custom_title</code>, and <code>hide_title</code>.</p>
   <h2 style="font-size:22px;margin:36px 0 8px;">More cards</h2>
@@ -35,7 +35,7 @@
   <p><strong>Languages card</strong> — top languages by bytes across the user's repos. Layouts: <code>layout=normal|compact|donut</code>, plus <code>langs_count</code> and <code>exclude_lang</code>:</p>
   <pre><code>/languages?username=xsrazy&amp;theme=tokyo-night</code></pre>
   <img src="/languages?username=xsrazy&amp;theme=tokyo-night" alt="Xsrazy's Top Languages" />
-  <p><strong>Trophy card</strong> — achievement trophies with ranks (UNKNOWN, C, B, A, AA, AAA, S, SS, SSS) for stars, followers, contributions, pull requests, issues, public repos, and account age. Options: <code>column</code> (tiles per row) and <code>rank</code> (rank filter):</p>
+  <p><strong>Trophy card</strong> — achievement trophies with ranks (UNKNOWN, C, B, A, AA, AAA, S, SS, SSS) for stars, followers, contributions, pull requests, issues, public repos, and account age. All trophies always render together in a single row:</p>
   <pre><code>/trophy?username=xsrazy&amp;theme=tokyo-night</code></pre>
   <img src="/trophy?username=xsrazy&amp;theme=tokyo-night" alt="Xsrazy's GitHub Trophies" />
   <h2 style="font-size:22px;margin:36px 0 8px;">Customization examples</h2>
@@ -48,9 +48,6 @@
   <p>Languages donut layout (<code>layout=donut</code>, <code>langs_count=8</code>):</p>
   <pre><code>/languages?username=xsrazy&amp;layout=donut&amp;langs_count=8</code></pre>
   <img src="/languages?username=xsrazy&amp;layout=donut&amp;langs_count=8" alt="Languages card with donut layout" />
-  <p>Trophy card with four tiles per row (<code>column=4</code>):</p>
-  <pre><code>/trophy?username=xsrazy&amp;column=4</code></pre>
-  <img src="/trophy?username=xsrazy&amp;column=4" alt="Trophy card with four tiles per row" />
 </main>
 </body>
 </html>

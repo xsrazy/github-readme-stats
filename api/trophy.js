@@ -3,8 +3,8 @@
 // taken from that project's public source (src/trophy.ts). All data is
 // public-only, from the same sources as the other cards.
 // Usage: /trophy?username=xsrazy&theme=tokyo-night
-// Options: column=N (tiles per row), rank=SSS,S (only show those ranks),
-// plus the shared theme/color/border/title options. The Contributions
+// The trophy card always renders every tile in a single row; it has no
+// layout options, only the shared theme/color/border/title options. The Contributions
 // trophy uses the last-year total from the jogruber contribution calendar,
 // the same window as the streak card.
 
@@ -118,18 +118,13 @@ module.exports = async (req, res) => {
     tiles.push({ label: cat.label, rank, message, display });
   }
 
-  const rankFilter = new Set(
-    String(q.rank || "").split(",").map((s) => s.trim().toUpperCase()).filter(Boolean)
-  );
-  if (rankFilter.size) tiles = tiles.filter((t) => rankFilter.has(t.rank));
   if (!tiles.length) {
     return sendSVG(res, errorCard({ ...errOpts, message: "No trophy data found for this user" }), 300);
   }
 
-  let perRow = parseInt(q.column, 10);
-  if (!Number.isFinite(perRow) || perRow < 1) perRow = tiles.length;
-  perRow = Math.min(perRow, tiles.length);
-  const rows = Math.ceil(tiles.length / perRow);
+  // Fixed layout: all tiles in a single row.
+  const perRow = tiles.length;
+  const rows = 1;
 
   const TW = 118, TH = 122, GAP = 10, TOP = 56;
   const W = perRow * TW + (perRow - 1) * GAP + 48;
