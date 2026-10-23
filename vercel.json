@@ -1,1 +1,1 @@
-{"rewrites":[{"destination":"/api/graph","source":"/graph"}]}
+{"rewrites":[{"destination":"/api/graph","source":"/graph"},{"destination":"/api/stats","source":"/stats"},{"destination":"/api/streak","source":"/streak"},{"destination":"/api/languages","source":"/languages"}]}

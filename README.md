@@ -23,8 +23,8 @@ Activity Graph API draws a smooth area chart of a GitHub user's daily contributi
 
 ## Architecture
 
-- **Runtime:** Vercel Functions (Node.js), one function at `api/graph.js`
-- **Routing:** `vercel.json` rewrites `/graph` to `/api/graph`; `index.html` is a static landing page with a live demo
+- **Runtime:** Vercel Functions (Node.js); functions in `api/` (`graph.js` plus the `stats` / `streak` / `languages` cards sharing `lib/cards.js`)
+- **Routing:** `vercel.json` rewrites `/graph`, `/stats`, `/streak`, and `/languages` to their functions in `api/`; `index.html` is a static landing page with live demos
 - **Data source:** the public [github-contributions-api](https://github.com/jogruber/github-contributions-api) v4 endpoint, which aggregates a user's public GitHub contribution calendar (no auth required)
 - **Rendering:** the SVG chart (path smoothing, gradient fill, grid, axis labels) is generated in code; nothing is stored
 
@@ -33,6 +33,11 @@ Activity Graph API draws a smooth area chart of a GitHub user's daily contributi
 | Endpoint | Method | Description |
 | --- | --- | --- |
 | `/graph` | GET | Returns the activity graph as `image/svg+xml` |
+| `/stats` | GET | Returns a GitHub stats card (stars, forks, contributions, PRs, issues, followers, repos) as `image/svg+xml` |
+| `/streak` | GET | Returns a contribution streak card (total, current streak, longest streak) as `image/svg+xml` |
+| `/languages` | GET | Returns a top languages card (share by bytes across the user's repos) as `image/svg+xml` |
+
+The `/stats` and `/languages` cards read from the GitHub REST API; `/streak` uses the same contribution calendar as `/graph`. The `days` parameter only applies to `/graph`.
 
 | Parameter | Required | Default | Notes |
 | --- | --- | --- | --- |
@@ -48,7 +53,7 @@ https://activity-graph.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night&day
 
 ## Environment Variables
 
-None. The function needs no secrets or configuration.
+Optional: `GITHUB_TOKEN`. When set, the stats and languages cards use it for GitHub API calls to get higher rate limits. Cards only ever show public data: search queries are restricted with `is:public` and private repos are filtered out.
 
 ## Credits
 
