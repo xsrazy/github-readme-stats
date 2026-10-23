@@ -2,9 +2,9 @@
 
 A self-hosted GitHub contribution activity graph API that renders SVG charts for profile READMEs.
 
-**Live:** https://activity-graph-lovat.vercel.app
+**Live:** https://activity-graph.xsrazy.web.id
 
-![Xsrazy's Activity Graph](https://activity-graph-lovat.vercel.app/graph?username=xsrazy&theme=tokyo-night)
+![Xsrazy's Activity Graph](https://activity-graph.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night)
 
 ## About
 
@@ -43,7 +43,7 @@ Activity Graph API draws a smooth area chart of a GitHub user's daily contributi
 Example:
 
 ```text
-https://activity-graph-lovat.vercel.app/graph?username=xsrazy&theme=tokyo-night&days=31
+https://activity-graph.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night&days=31
 ```
 
 ## Environment Variables
