@@ -7,16 +7,22 @@ A self-hosted GitHub card suite that renders SVG cards for profile READMEs: an a
 
 > **Note:** this project was previously served from `activity-graph.xsrazy.web.id`. That domain now permanently redirects to this one, so existing embeds keep working.
 
+> **Note on the name:** this is an independent project, built and hosted by its owner, and it is not affiliated with the original [github-readme-stats](https://github.com/anuraghazra/github-readme-stats) by anuraghazra. It follows the same card ideas and parameter conventions, with its own codebase and an expanded card set.
+
 ![Xsrazy's Activity Graph](https://github-readme-stats.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night)
 
 ## About
 
-GitHub Readme Stats draws a smooth area chart of a GitHub user's daily contributions over the last 7 to 365 days and serves it as a plain SVG image that can be embedded anywhere, including a GitHub profile README. It was built after the popular third-party activity graph widget went offline (its deployment was disabled), leaving a broken image on the profile. This version runs on infrastructure the owner controls, has zero runtime dependencies, and needs no authentication or API keys. The companion cards (stats, streak, languages, trophy) share the same theming system, so a whole profile can run on one self-hosted suite instead of four different third-party services.
+GitHub Readme Stats is a self-hosted suite of five SVG cards for GitHub profile READMEs: an activity graph, a stats card, a streak card, a top languages card, and a trophy card. Every card is generated on request and served as a plain SVG image that can be embedded anywhere.
+
+The suite started as a single activity graph, built after the popular third-party activity graph widget went offline (its deployment was disabled) and left a broken image on the owner's profile. It then grew into a full suite, so a whole profile can run on one self-hosted service instead of four different third-party ones.
+
+All five cards share one theming system: exactly 100 themes with unique palettes, full per-card color customization, and a visual theme builder. The suite runs on infrastructure the owner controls, has zero runtime dependencies, and needs no authentication or API keys; an optional GitHub token only raises API rate limits. It only ever displays public data.
 
 ## Features
 
 - Five cards: activity graph, stats, streak, top languages, and trophies
-- 100 themes: the complete github-readme-stats theme catalog, this project's five original themes, and extra palettes such as the Catppuccin and Rose Pine families. Full gallery with live previews: [themes/README.md](themes/README.md)
+- 100 themes: the full theme catalog popularized by github-readme-stats, this project's five original themes, and extra palettes such as the Catppuccin and Rose Pine families. Full gallery with live previews: [themes/README.md](themes/README.md)
 - Full custom colors on every card: per-element hex overrides, gradient and transparent backgrounds, following the parameter conventions popularized by github-readme-stats
 - A visual [theme builder](https://github-readme-stats.xsrazy.web.id/builder) with live preview and one-click copy of the final URL and Markdown embed
 - Trophy card modeled on github-profile-trophy, with the same rank thresholds and rank messages
