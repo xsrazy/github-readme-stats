@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Card Theme Builder - Activity Graph API</title>
+<meta name="description" content="Visual theme builder for the Activity Graph API card suite: pick a card, theme, and custom colors, then copy the embed URL." />
+<style>
+  body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: #0d1117; color: #e6edf3; }
+  main { max-width: 860px; margin: 0 auto; padding: 48px 20px 64px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  p { color: #9aa5ce; line-height: 1.6; }
+  a { color: #7aa2f7; }
+  code { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 2px 6px; color: #7aa2f7; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px 22px; margin: 22px 0; }
+  label { display: block; font-size: 13px; color: #9aa5ce; margin-bottom: 6px; }
+  select, input[type="text"], input[type="number"] { width: 100%; box-sizing: border-box; background: #161b22; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; padding: 8px; font-size: 14px; }
+  input[type="color"] { width: 52px; height: 34px; border: 1px solid #30363d; border-radius: 6px; background: #161b22; padding: 2px; vertical-align: middle; }
+  input[type="range"] { width: 100%; }
+  .colorrow { display: flex; align-items: center; gap: 10px; }
+  .colorrow span { font-size: 13px; color: #9aa5ce; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e6edf3; }
+  .check input { width: 17px; height: 17px; }
+  .out { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px; display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+  .out input { flex: 1; }
+  button { background: #1f6feb; color: #fff; border: 0; border-radius: 6px; padding: 8px 14px; font-size: 13.5px; cursor: pointer; white-space: nowrap; }
+  button:hover { background: #388bfd; }
+  #preview { max-width: 100%; margin-top: 14px; }
+  .hidden { display: none; }
+  h2 { font-size: 20px; margin: 34px 0 6px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Card Theme Builder</h1>
+  <p>Build a fully custom card URL without memorizing parameters. Pick a card, choose one of the 148 themes, override any color, and copy the result. <a href="/">Back to the API overview</a>.</p>
+
+  <div class="grid">
+    <div>
+      <label for="card">Card type</label>
+      <select id="card">
+        <option value="graph">Activity Graph</option>
+        <option value="stats">Stats</option>
+        <option value="streak">Streak</option>
+        <option value="languages">Languages</option>
+        <option value="trophy">Trophy</option>
+      </select>
+    </div>
+    <div>
+      <label for="username">GitHub username</label>
+      <input type="text" id="username" value="xsrazy" />
+    </div>
+    <div>
+      <label for="theme">Theme (148 available)</label>
+      <select id="theme">
+        <option value="algolia">algolia</option>
+        <option value="ambient-gradient">ambient-gradient</option>
+        <option value="ambient_gradient">ambient_gradient</option>
+        <option value="apprentice">apprentice</option>
+        <option value="aura">aura</option>
+        <option value="aura-dark">aura-dark</option>
+        <option value="aura_dark">aura_dark</option>
+        <option value="ayu-dark">ayu-dark</option>
+        <option value="ayu-light">ayu-light</option>
+        <option value="ayu-mirage">ayu-mirage</option>
+        <option value="ayu_dark">ayu_dark</option>
+        <option value="ayu_light">ayu_light</option>
+        <option value="ayu_mirage">ayu_mirage</option>
+        <option value="bear">bear</option>
+        <option value="blue-green">blue-green</option>
+        <option value="blue-navy">blue-navy</option>
+        <option value="blue_green">blue_green</option>
+        <option value="blue_navy">blue_navy</option>
+        <option value="blueberry">blueberry</option>
+        <option value="buefy">buefy</option>
+        <option value="calm">calm</option>
+        <option value="calm-pink">calm-pink</option>
+        <option value="calm_pink">calm_pink</option>
+        <option value="carbonfox">carbonfox</option>
+        <option value="catppuccin-frappe">catppuccin-frappe</option>
+        <option value="catppuccin-latte">catppuccin-latte</option>
+        <option value="catppuccin-macchiato">catppuccin-macchiato</option>
+        <option value="catppuccin-mocha">catppuccin-mocha</option>
+        <option value="catppuccin_frappe">catppuccin_frappe</option>
+        <option value="catppuccin_latte">catppuccin_latte</option>
+        <option value="catppuccin_macchiato">catppuccin_macchiato</option>
+        <option value="catppuccin_mocha">catppuccin_mocha</option>
+        <option value="chartreuse-dark">chartreuse-dark</option>
+        <option value="chartreuse_dark">chartreuse_dark</option>
+        <option value="city-lights">city-lights</option>
+        <option value="city_lights">city_lights</option>
+        <option value="cobalt">cobalt</option>
+        <option value="cobalt2">cobalt2</option>
+        <option value="codeSTACKr">codeSTACKr</option>
+        <option value="darcula">darcula</option>
+        <option value="dark">dark</option>
+        <option value="date-night">date-night</option>
+        <option value="date_night">date_night</option>
+        <option value="default">default</option>
+        <option value="default-repocard">default-repocard</option>
+        <option value="default_repocard">default_repocard</option>
+        <option value="discord-old-blurple">discord-old-blurple</option>
+        <option value="discord_old_blurple">discord_old_blurple</option>
+        <option value="dracula">dracula</option>
+        <option value="duskfox">duskfox</option>
+        <option value="everforest">everforest</option>
+        <option value="everforest-light">everforest-light</option>
+        <option value="everforest_light">everforest_light</option>
+        <option value="flag-india">flag-india</option>
+        <option value="flag_india">flag_india</option>
+        <option value="flexoki">flexoki</option>
+        <option value="github">github</option>
+        <option value="github-dark">github-dark</option>
+        <option value="github-dark-dimmed">github-dark-dimmed</option>
+        <option value="github-light">github-light</option>
+        <option value="github_dark">github_dark</option>
+        <option value="github_dark_dimmed">github_dark_dimmed</option>
+        <option value="github_light">github_light</option>
+        <option value="gotham">gotham</option>
+        <option value="graywhite">graywhite</option>
+        <option value="great-gatsby">great-gatsby</option>
+        <option value="great_gatsby">great_gatsby</option>
+        <option value="gruvbox">gruvbox</option>
+        <option value="gruvbox-light">gruvbox-light</option>
+        <option value="gruvbox_light">gruvbox_light</option>
+        <option value="highcontrast">highcontrast</option>
+        <option value="holi">holi</option>
+        <option value="horizon">horizon</option>
+        <option value="jolly">jolly</option>
+        <option value="kacho-ga">kacho-ga</option>
+        <option value="kacho_ga">kacho_ga</option>
+        <option value="kanagawa-wave">kanagawa-wave</option>
+        <option value="kanagawa_wave">kanagawa_wave</option>
+        <option value="lackluster">lackluster</option>
+        <option value="maroongold">maroongold</option>
+        <option value="material-palenight">material-palenight</option>
+        <option value="material_palenight">material_palenight</option>
+        <option value="melange">melange</option>
+        <option value="merko">merko</option>
+        <option value="midnight-purple">midnight-purple</option>
+        <option value="midnight_purple">midnight_purple</option>
+        <option value="moltack">moltack</option>
+        <option value="monokai">monokai</option>
+        <option value="neon">neon</option>
+        <option value="nightfox">nightfox</option>
+        <option value="nightowl">nightowl</option>
+        <option value="noctis-minimus">noctis-minimus</option>
+        <option value="noctis_minimus">noctis_minimus</option>
+        <option value="nord">nord</option>
+        <option value="ocean-dark">ocean-dark</option>
+        <option value="ocean_dark">ocean_dark</option>
+        <option value="omni">omni</option>
+        <option value="one-dark-pro">one-dark-pro</option>
+        <option value="one_dark_pro">one_dark_pro</option>
+        <option value="onedark">onedark</option>
+        <option value="outrun">outrun</option>
+        <option value="panda">panda</option>
+        <option value="poimandres">poimandres</option>
+        <option value="prussian">prussian</option>
+        <option value="radical">radical</option>
+        <option value="react">react</option>
+        <option value="rose">rose</option>
+        <option value="rose-pine">rose-pine</option>
+        <option value="rose-pine-dawn">rose-pine-dawn</option>
+        <option value="rose-pine-moon">rose-pine-moon</option>
+        <option value="rose_pine">rose_pine</option>
+        <option value="rose_pine_dawn">rose_pine_dawn</option>
+        <option value="rose_pine_moon">rose_pine_moon</option>
+        <option value="shades-of-purple">shades-of-purple</option>
+        <option value="shades_of_purple">shades_of_purple</option>
+        <option value="shadow-blue">shadow-blue</option>
+        <option value="shadow-green">shadow-green</option>
+        <option value="shadow-red">shadow-red</option>
+        <option value="shadow_blue">shadow_blue</option>
+        <option value="shadow_green">shadow_green</option>
+        <option value="shadow_red">shadow_red</option>
+        <option value="slateorange">slateorange</option>
+        <option value="snazzy">snazzy</option>
+        <option value="solarized-dark">solarized-dark</option>
+        <option value="solarized-light">solarized-light</option>
+        <option value="solarized_dark">solarized_dark</option>
+        <option value="solarized_light">solarized_light</option>
+        <option value="swift">swift</option>
+        <option value="synthwave">synthwave</option>
+        <option value="synthwave_84">synthwave_84</option>
+        <option value="tokyo-night">tokyo-night</option>
+        <option value="tokyo-night-light">tokyo-night-light</option>
+        <option value="tokyo-night-storm">tokyo-night-storm</option>
+        <option value="tokyo_night">tokyo_night</option>
+        <option value="tokyo_night_light">tokyo_night_light</option>
+        <option value="tokyo_night_storm">tokyo_night_storm</option>
+        <option value="tokyonight">tokyonight</option>
+        <option value="transparent">transparent</option>
+        <option value="vision-friendly-dark">vision-friendly-dark</option>
+        <option value="vision_friendly_dark">vision_friendly_dark</option>
+        <option value="vitesse-dark">vitesse-dark</option>
+        <option value="vitesse-light">vitesse-light</option>
+        <option value="vitesse_dark">vitesse_dark</option>
+        <option value="vitesse_light">vitesse_light</option>
+        <option value="vue">vue</option>
+        <option value="vue-dark">vue-dark</option>
+        <option value="vue_dark">vue_dark</option>
+        <option value="yeblu">yeblu</option>
+      </select>
+    </div>
+    <div>
+      <label for="customTitle">Custom title (optional)</label>
+      <input type="text" id="customTitle" placeholder="Leave empty for the default title" />
+    </div>
+  </div>
+
+  <h2>Colors</h2>
+  <div class="grid">
+    <div>
+      <label>Background mode</label>
+      <select id="bgMode">
+        <option value="theme">Theme default</option>
+        <option value="solid">Solid color</option>
+        <option value="gradient">Gradient</option>
+      </select>
+      <div class="colorrow" style="margin-top:8px;">
+        <input type="color" id="bgColor" value="#0d1117" /><span>solid color</span>
+      </div>
+      <div id="gradientBox" class="hidden" style="margin-top:8px;">
+        <div class="colorrow"><input type="color" id="g1" value="#4158d0" /><span>stop 1</span></div>
+        <div class="colorrow" style="margin-top:6px;"><input type="color" id="g2" value="#c850c0" /><span>stop 2</span></div>
+        <div class="colorrow" style="margin-top:6px;"><input type="color" id="g3" value="#ffcc70" /><span>stop 3</span>
+        <label class="check"><input type="checkbox" id="g3on" checked /> use stop 3</label></div>
+        <label style="margin-top:8px;">Angle: <span id="angleVal">35</span> degrees</label>
+        <input type="range" id="gAngle" min="0" max="360" value="35" />
+      </div>
+    </div>
+    <div>
+      <div class="colorrow"><input type="checkbox" id="titleOn" /> <input type="color" id="titleColor" value="#58a6ff" /><span>title color</span></div>
+      <div class="colorrow" style="margin-top:10px;"><input type="checkbox" id="textOn" /> <input type="color" id="textColor" value="#8b949e" /><span>text color</span></div>
+      <div class="colorrow" style="margin-top:10px;"><input type="checkbox" id="borderOn" /> <input type="color" id="borderColor" value="#30363d" /><span>border color</span></div>
+      <div class="colorrow" style="margin-top:10px;"><input type="checkbox" id="accentOn" /> <input type="color" id="accentColor" value="#f8d847" /><span id="accentLabel">accent (ring / line)</span></div>
+      <div class="colorrow hidden" id="pointRow" style="margin-top:10px;"><input type="checkbox" id="pointOn" /> <input type="color" id="pointColor" value="#bb9af7" /><span>graph point color</span></div>
+    </div>
+    <div>
+      <label class="check"><input type="checkbox" id="hideBorder" /> hide border</label>
+      <label class="check" style="margin-top:10px;"><input type="checkbox" id="hideTitle" /> hide title</label>
+      <label style="margin-top:14px;">Border radius: <span id="radiusVal">8</span> px</label>
+      <input type="range" id="radius" min="0" max="30" value="8" />
+      <label class="check" style="margin-top:6px;"><input type="checkbox" id="radiusOn" /> apply custom radius</label>
+    </div>
+  </div>
+
+  <div id="cardOpts">
+    <div class="grid">
+      <div id="daysBox">
+        <label for="days">Graph days (7 to 90)</label>
+        <input type="number" id="days" min="7" max="90" value="31" />
+      </div>
+      <div id="langBox" class="hidden">
+        <label for="layout">Languages layout</label>
+        <select id="layout">
+          <option value="normal">normal</option>
+          <option value="compact">compact</option>
+          <option value="donut">donut</option>
+        </select>
+        <label for="langsCount" style="margin-top:10px;">Languages count (1 to 10)</label>
+        <input type="number" id="langsCount" min="1" max="10" value="6" />
+      </div>
+      <div id="trophyBox" class="hidden">
+        <label for="column">Trophy tiles per row (empty = one row)</label>
+        <input type="number" id="column" min="1" max="7" placeholder="all" />
+      </div>
+    </div>
+  </div>
+
+  <h2>Preview</h2>
+  <img id="preview" alt="Card preview" />
+
+  <h2>Embed</h2>
+  <div class="out">
+    <input type="text" id="urlOut" readonly />
+    <button id="copyUrl" type="button">Copy URL</button>
+  </div>
+  <div class="out">
+    <input type="text" id="mdOut" readonly />
+    <button id="copyMd" type="button">Copy Markdown</button>
+  </div>
+</main>
+<script>
+  var $ = function (id) { return document.getElementById(id); };
+  var hex = function (v) { return v.replace("#", ""); };
+
+  function build() {
+    var card = $("card").value;
+    var params = new URLSearchParams();
+    params.set("username", $("username").value.trim() || "xsrazy");
+    params.set("theme", $("theme").value);
+
+    var mode = $("bgMode").value;
+    if (mode === "solid") {
+      params.set("bg_color", hex($("bgColor").value));
+    } else if (mode === "gradient") {
+      var stops = [hex($("g1").value), hex($("g2").value)];
+      if ($("g3on").checked) stops.push(hex($("g3").value));
+      params.set("bg_color", $("gAngle").value + "," + stops.join(","));
+    }
+    if ($("titleOn").checked) params.set("title_color", hex($("titleColor").value));
+    if ($("textOn").checked) params.set("text_color", hex($("textColor").value));
+    if ($("borderOn").checked) params.set("border_color", hex($("borderColor").value));
+    if ($("accentOn").checked) {
+      if (card === "graph") params.set("line", hex($("accentColor").value));
+      else params.set("ring_color", hex($("accentColor").value));
+    }
+    if (card === "graph" && $("pointOn").checked) params.set("point", hex($("pointColor").value));
+    if ($("hideBorder").checked) params.set("hide_border", "true");
+    if ($("hideTitle").checked) params.set("hide_title", "true");
+    if ($("radiusOn").checked) params.set("border_radius", $("radius").value);
+    if ($("customTitle").value.trim()) params.set("custom_title", $("customTitle").value.trim());
+
+    if (card === "graph") params.set("days", $("days").value || "31");
+    if (card === "languages") {
+      params.set("layout", $("layout").value);
+      params.set("langs_count", $("langsCount").value || "6");
+    }
+    if (card === "trophy" && $("column").value) params.set("column", $("column").value);
+
+    var url = location.origin + "/" + card + "?" + params.toString();
+    $("preview").src = url;
+    $("urlOut").value = url;
+    $("mdOut").value = "![GitHub Card](" + url + ")";
+
+    $("gradientBox").classList.toggle("hidden", mode !== "gradient");
+    $("angleVal").textContent = $("gAngle").value;
+    $("radiusVal").textContent = $("radius").value;
+    $("daysBox").classList.toggle("hidden", card !== "graph");
+    $("langBox").classList.toggle("hidden", card !== "languages");
+    $("trophyBox").classList.toggle("hidden", card !== "trophy");
+    $("pointRow").classList.toggle("hidden", card !== "graph");
+    $("accentLabel").textContent = card === "graph" ? "graph line color" : "accent (ring color)";
+  }
+
+  document.querySelectorAll("input, select").forEach(function (el) {
+    el.addEventListener("input", build);
+    el.addEventListener("change", build);
+  });
+  function copy(id, btn) {
+    var el = $(id);
+    el.select();
+    var done = function () { var old = btn.textContent; btn.textContent = "Copied"; setTimeout(function () { btn.textContent = old; }, 1200); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(el.value).then(done, done);
+    else { document.execCommand("copy"); done(); }
+  }
+  $("copyUrl").addEventListener("click", function () { copy("urlOut", this); });
+  $("copyMd").addEventListener("click", function () { copy("mdOut", this); });
+  $("theme").value = "tokyo-night";
+  build();
+</script>
+</body>
+</html>

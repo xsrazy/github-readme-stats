@@ -3,7 +3,7 @@
 // Usage: /streak?username=xsrazy&theme=tokyo-night
 
 const {
-  getTheme, parseUsername, displayName, fmt, esc,
+  resolveStyle, parseUsername, displayName, fmt, esc,
   fetchContributions, cardShell, errorCard, sendSVG,
 } = require("../lib/cards");
 
@@ -72,7 +72,9 @@ function computeStreaks(days) {
 module.exports = async (req, res) => {
   const q = req.query || {};
   const username = parseUsername(q);
-  const theme = getTheme((q.theme || "github-dark").toString());
+  const style = resolveStyle(q);
+  const theme = style.theme;
+  const title = style.customTitle || `${displayName(username)}'s Contribution Streak`;
 
   let days;
   try {
@@ -83,6 +85,10 @@ module.exports = async (req, res) => {
       username,
       theme,
       title: `${displayName(username)}'s Contribution Streak`,
+      customTitle: style.customTitle,
+      hideTitle: style.hideTitle,
+      hideBorder: style.hideBorder,
+      borderRadius: style.borderRadius,
       message: "Contribution data is temporarily unavailable",
     }), 300);
   }
@@ -90,7 +96,7 @@ module.exports = async (req, res) => {
   const { total, longest, current } = computeStreaks(days);
   const W = 540, H = 190;
   const col = (cx, value, label, range) => `
-<text x="${cx}" y="98" text-anchor="middle" font-size="30" font-weight="700" fill="${theme.title}">${fmt(value)}</text>
+<text x="${cx}" y="98" text-anchor="middle" font-size="30" font-weight="700" fill="${theme.accent}">${fmt(value)}</text>
 <text x="${cx}" y="126" text-anchor="middle" font-size="13" fill="${theme.text}">${esc(label)}</text>
 <text x="${cx}" y="148" text-anchor="middle" font-size="11" fill="${theme.text}">${esc(range)}</text>`;
   const body =
@@ -104,7 +110,10 @@ module.exports = async (req, res) => {
     width: W,
     height: H,
     theme,
-    title: `${displayName(username)}'s Contribution Streak`,
+    title,
+    hideTitle: style.hideTitle,
+    hideBorder: style.hideBorder,
+    borderRadius: style.borderRadius,
     body,
   });
   return sendSVG(res, svg, 3600);

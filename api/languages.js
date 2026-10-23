@@ -1,9 +1,11 @@
 // Languages card: top languages by bytes across the user's repos, as SVG.
 // Data: GitHub REST API (repos list + per-repo language breakdown).
 // Usage: /languages?username=xsrazy&theme=tokyo-night
+// Options: layout=normal|compact|donut, langs_count=1..10 (default 6),
+// exclude_lang=HTML,CSS, plus the shared theme/color/border/title options.
 
 const {
-  getTheme, parseUsername, displayName, esc,
+  resolveStyle, parseUsername, displayName, esc,
   fetchProfile, fetchRepos, fetchRepoLanguages, cardShell, errorCard, sendSVG,
 } = require("../lib/cards");
 
@@ -20,7 +22,14 @@ const LANG_COLORS = {
 module.exports = async (req, res) => {
   const q = req.query || {};
   const username = parseUsername(q);
-  const theme = getTheme((q.theme || "github-dark").toString());
+  const style = resolveStyle(q);
+  const theme = style.theme;
+  const title = style.customTitle || `${displayName(username)}'s Top Languages`;
+  const errOpts = {
+    username, theme, title: `${displayName(username)}'s Top Languages`,
+    customTitle: style.customTitle, hideTitle: style.hideTitle,
+    hideBorder: style.hideBorder, borderRadius: style.borderRadius,
+  };
 
   let repos;
   try {
@@ -30,7 +39,7 @@ module.exports = async (req, res) => {
     const msg = e.status === 404
       ? `GitHub user "${username}" was not found`
       : "GitHub data is temporarily unavailable";
-    return sendSVG(res, errorCard({ username, theme, message: msg, title: `${displayName(username)}'s Top Languages` }), 300);
+    return sendSVG(res, errorCard({ ...errOpts, message: msg }), 300);
   }
 
   const owned = repos.filter((r) => !r.fork && !r.private && r.languages_url);
@@ -47,9 +56,7 @@ module.exports = async (req, res) => {
     })
   );
   if (results.some((r) => r.status !== "fulfilled")) {
-    return sendSVG(res, errorCard({
-      username, theme, title: `${displayName(username)}'s Top Languages`, message: "GitHub data is temporarily unavailable",
-    }), 300);
+    return sendSVG(res, errorCard({ ...errOpts, message: "GitHub data is temporarily unavailable" }), 300);
   }
   for (const r of results) {
     for (const [lang, bytes] of Object.entries(r.value)) {
@@ -57,47 +64,94 @@ module.exports = async (req, res) => {
     }
   }
 
-  const sorted = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+  const exclude = new Set(
+    String(q.exclude_lang || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean)
+  );
+  const sorted = Object.entries(totals)
+    .filter(([lang]) => !exclude.has(lang.toLowerCase()))
+    .sort((a, b) => b[1] - a[1]);
   const grand = sorted.reduce((s, [, b]) => s + b, 0);
   if (!grand) {
-    return sendSVG(res, errorCard({
-      username, theme, title: `${displayName(username)}'s Top Languages`, message: "No language data found for this user",
-    }), 300);
+    return sendSVG(res, errorCard({ ...errOpts, message: "No language data found for this user" }), 300);
   }
 
-  const TOP = 6;
-  const top = sorted.slice(0, TOP);
-  const restBytes = sorted.slice(TOP).reduce((s, [, b]) => s + b, 0);
+  let count = parseInt(q.langs_count, 10);
+  if (!Number.isFinite(count)) count = 6;
+  count = Math.min(10, Math.max(1, count));
+  const top = sorted.slice(0, count);
+  const restBytes = sorted.slice(count).reduce((s, [, b]) => s + b, 0);
   if (restBytes > 0) top.push(["Other", restBytes]);
 
+  const layout = ["normal", "compact", "donut"].includes(String(q.layout)) ? String(q.layout) : "normal";
   const W = 400;
-  const rowH = 26;
-  const H = 78 + top.length * rowH + 26;
-  const barX = 24, barW = W - 48;
-  let body = "";
+  const pct = (bytes) => ((bytes / grand) * 100).toFixed(1);
+  const colorOf = (lang) => LANG_COLORS[lang] || theme.line;
+  let H, body = "";
 
-  // Stacked proportion bar.
-  let bx = barX;
-  for (const [lang, bytes] of top) {
-    const w = Math.max(2, (bytes / grand) * barW);
-    const color = LANG_COLORS[lang] || theme.line;
-    body += `<rect x="${bx.toFixed(1)}" y="52" width="${Math.min(w, barX + barW - bx).toFixed(1)}" height="10" fill="${color}"/>`;
-    bx += w;
+  if (layout === "compact") {
+    const rows = Math.ceil(top.length / 2);
+    const rowH = 24;
+    H = 78 + rows * rowH + 26;
+    const barX = 24, barW = W - 48;
+    let bx = barX;
+    for (const [lang, bytes] of top) {
+      const w = Math.max(2, (bytes / grand) * barW);
+      body += `<rect x="${bx.toFixed(1)}" y="52" width="${Math.min(w, barX + barW - bx).toFixed(1)}" height="10" fill="${colorOf(lang)}"/>`;
+      bx += w;
+    }
+    const colW = 168, colX = [24, 208];
+    top.forEach(([lang, bytes], i) => {
+      const row = Math.floor(i / 2), col = i % 2;
+      const x = colX[col];
+      const y = 92 + row * rowH;
+      body += `<circle cx="${x + 6}" cy="${y - 4}" r="5" fill="${colorOf(lang)}"/>`;
+      body += `<text x="${x + 18}" y="${y}" font-size="13" fill="${theme.text}">${esc(lang)}</text>`;
+      body += `<text x="${x + colW}" y="${y}" text-anchor="end" font-size="13" font-weight="700" fill="${theme.accent}">${pct(bytes)}%</text>`;
+    });
+  } else if (layout === "donut") {
+    const rowH = 26;
+    H = Math.max(212, 78 + top.length * rowH + 26);
+    const cx = 100, cy = Math.round((52 + (H - 14)) / 2), r = 52, C = 2 * Math.PI * r;
+    body += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${theme.grid}" stroke-width="20"/>`;
+    let acc = 0;
+    for (const [lang, bytes] of top) {
+      const len = (bytes / grand) * C;
+      body += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${colorOf(lang)}" stroke-width="20" stroke-dasharray="${Math.max(0, len - 1.5).toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-acc).toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>`;
+      acc += len;
+    }
+    top.forEach(([lang, bytes], i) => {
+      const y = 92 + i * rowH;
+      body += `<circle cx="196" cy="${y - 4}" r="5" fill="${colorOf(lang)}"/>`;
+      body += `<text x="210" y="${y}" font-size="13.5" fill="${theme.text}">${esc(lang)}</text>`;
+      body += `<text x="${W - 24}" y="${y}" text-anchor="end" font-size="13.5" font-weight="700" fill="${theme.accent}">${pct(bytes)}%</text>`;
+    });
+  } else {
+    const rowH = 26;
+    H = 78 + top.length * rowH + 26;
+    const barX = 24, barW = W - 48;
+    // Stacked proportion bar.
+    let bx = barX;
+    for (const [lang, bytes] of top) {
+      const w = Math.max(2, (bytes / grand) * barW);
+      body += `<rect x="${bx.toFixed(1)}" y="52" width="${Math.min(w, barX + barW - bx).toFixed(1)}" height="10" fill="${colorOf(lang)}"/>`;
+      bx += w;
+    }
+    top.forEach(([lang, bytes], i) => {
+      const y = 92 + i * rowH;
+      body += `<circle cx="30" cy="${y - 4}" r="5" fill="${colorOf(lang)}"/>`;
+      body += `<text x="44" y="${y}" font-size="13.5" fill="${theme.text}">${esc(lang)}</text>`;
+      body += `<text x="${W - 24}" y="${y}" text-anchor="end" font-size="13.5" font-weight="700" fill="${theme.accent}">${pct(bytes)}%</text>`;
+    });
   }
-  top.forEach(([lang, bytes], i) => {
-    const y = 92 + i * rowH;
-    const pct = ((bytes / grand) * 100).toFixed(1);
-    const color = LANG_COLORS[lang] || theme.line;
-    body += `<circle cx="30" cy="${y - 4}" r="5" fill="${color}"/>`;
-    body += `<text x="44" y="${y}" font-size="13.5" fill="${theme.text}">${esc(lang)}</text>`;
-    body += `<text x="${W - 24}" y="${y}" text-anchor="end" font-size="13.5" font-weight="700" fill="${theme.title}">${pct}%</text>`;
-  });
 
   const svg = cardShell({
     width: W,
     height: H,
     theme,
-    title: `${displayName(username)}'s Top Languages`,
+    title,
+    hideTitle: style.hideTitle,
+    hideBorder: style.hideBorder,
+    borderRadius: style.borderRadius,
     body,
   });
   return sendSVG(res, svg, 21600);

@@ -1,1 +1,10 @@
-{"rewrites":[{"destination":"/api/graph","source":"/graph"},{"destination":"/api/stats","source":"/stats"},{"destination":"/api/streak","source":"/streak"},{"destination":"/api/languages","source":"/languages"}]}
+{
+  "rewrites": [
+    { "destination": "/api/graph", "source": "/graph" },
+    { "destination": "/api/stats", "source": "/stats" },
+    { "destination": "/api/streak", "source": "/streak" },
+    { "destination": "/api/languages", "source": "/languages" },
+    { "destination": "/api/trophy", "source": "/trophy" },
+    { "destination": "/builder.html", "source": "/builder" }
+  ]
+}

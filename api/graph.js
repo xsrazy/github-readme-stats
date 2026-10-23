@@ -1,6 +1,12 @@
 // Activity Graph API: renders a GitHub contribution activity graph as SVG.
 // Data source: github-contributions-api (jogruber) v4, public JSON, no auth.
 // Usage: /graph?username=xsrazy&theme=tokyo-night&days=31
+// Customization: any theme from the suite catalog in lib/cards.js (the five
+// original themes below keep priority and their exact values), plus
+// bg_color, title_color, text_color, border_color, line, point,
+// hide_border, border_radius, custom_title, hide_title.
+
+const { resolveStyle, gradientDef } = require("../lib/cards");
 
 const THEMES = {
   "tokyo-night": {
@@ -60,9 +66,9 @@ function smoothPath(pts) {
   return d;
 }
 
-function renderSVG({ username, days, theme, error }) {
+function renderSVG({ username, days, theme, error, style = {} }) {
   const W = 800, H = 320;
-  const t = THEMES[theme] || THEMES["github-dark"];
+  const t = theme;
   const padL = 46, padR = 16, padTop = 64, padBot = 34;
   const plotW = W - padL - padR;
   const plotH = H - padTop - padBot;
@@ -107,15 +113,21 @@ function renderSVG({ username, days, theme, error }) {
     }
   }
 
+  const bgDef = t.bgGradient ? `\n${gradientDef("bgg", t.bgGradient)}` : "";
+  const bgFill = t.bgGradient ? "url(#bgg)" : t.bg;
+  const radius = style.borderRadius == null ? 8 : style.borderRadius;
+  const stroke = style.hideBorder ? "none" : t.border;
+  const titleText = style.hideTitle
+    ? ""
+    : `\n<text x="24" y="36" font-family="Segoe UI, Ubuntu, sans-serif" font-size="19" font-weight="600" fill="${t.title}">${style.customTitle ? esc(style.customTitle) : `${esc(displayName)}&apos;s Activity Graph`}</text>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" fill="none">
 <defs>
 <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
 <stop offset="0%" stop-color="${t.line}" stop-opacity="0.45"/>
 <stop offset="100%" stop-color="${t.line}" stop-opacity="0.02"/>
-</linearGradient>
+</linearGradient>${bgDef}
 </defs>
-<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${t.bg}" stroke="${t.border}"/>
-<text x="24" y="36" font-family="Segoe UI, Ubuntu, sans-serif" font-size="19" font-weight="600" fill="${t.title}">${esc(displayName)}&apos;s Activity Graph</text>
+<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="${radius}" fill="${bgFill}" stroke="${stroke}"/>${titleText}
 <text x="${W - 24}" y="36" text-anchor="end" font-family="Segoe UI, Ubuntu, sans-serif" font-size="13" fill="${t.text}">${error ? "" : `${total} contributions in the last ${days.length} days`}</text>
 <g font-family="Segoe UI, Ubuntu, sans-serif">${body}</g>
 </svg>`;
@@ -124,7 +136,26 @@ function renderSVG({ username, days, theme, error }) {
 module.exports = async (req, res) => {
   const q = req.query || {};
   const username = (q.username || "xsrazy").toString().replace(/[^a-zA-Z0-9-]/g, "").slice(0, 39) || "xsrazy";
-  const theme = (q.theme || "github-dark").toString();
+  const themeName = (q.theme || "github-dark").toString();
+  // Local theme names keep priority (and their exact original values);
+  // any other name resolves from the suite catalog in lib/cards.js, whose
+  // entries share the same fields. Truly unknown names fall back to
+  // github-dark, exactly as before.
+  const style = resolveStyle(q);
+  if (THEMES[themeName]) {
+    style.theme = { ...THEMES[themeName] };
+    // Re-apply color overrides on top of the local palette.
+    const over = resolveStyle(q);
+    for (const k of ["bg", "bgGradient", "title", "text", "border", "grid", "line", "point", "accent"]) {
+      if (k === "bgGradient") {
+        if (over.theme.bgGradient) style.theme.bgGradient = over.theme.bgGradient;
+        else delete style.theme.bgGradient;
+      } else if (over.theme[k] !== undefined) style.theme[k] = over.theme[k];
+    }
+    // accent fallback must not clobber the local title-derived accent.
+    style.theme.accent = over.theme.accent;
+  }
+  const theme = style.theme;
   let daysN = parseInt(q.days, 10);
   if (!Number.isFinite(daysN)) daysN = 31;
   daysN = Math.min(90, Math.max(7, daysN));
@@ -134,10 +165,10 @@ module.exports = async (req, res) => {
     const all = await fetchContributions(username);
     const days = all.slice(-daysN);
     if (!days.length) throw new Error("no data");
-    svg = renderSVG({ username, days, theme, error: false });
+    svg = renderSVG({ username, days, theme, error: false, style });
     res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
   } catch (e) {
-    svg = renderSVG({ username, days: [], theme, error: true });
+    svg = renderSVG({ username, days: [], theme, error: true, style });
     res.setHeader("Cache-Control", "public, s-maxage=300");
   }
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
