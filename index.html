@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Activity Graph API</title>
+<meta name="description" content="Self-hosted GitHub contribution activity graph API that renders SVG charts for profile READMEs." />
+<style>
+  body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: #0d1117; color: #e6edf3; }
+  main { max-width: 860px; margin: 0 auto; padding: 48px 20px 64px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  p { color: #9aa5ce; line-height: 1.6; }
+  code { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 2px 6px; color: #7aa2f7; }
+  pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; overflow-x: auto; }
+  img { max-width: 100%; border-radius: 8px; margin-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Activity Graph API</h1>
+  <p>A self-hosted GitHub contribution activity graph that renders as an SVG image, ready to embed in a profile README. No auth, no tracking, cached at the edge.</p>
+  <p>Usage:</p>
+  <pre><code>/graph?username=xsrazy&amp;theme=tokyo-night&amp;days=31</code></pre>
+  <p>Parameters: <code>username</code> (GitHub username), <code>theme</code> (tokyo-night, github-dark, react, radical, highcontrast), <code>days</code> (7 to 90, default 31).</p>
+  <img src="/graph?username=xsrazy&amp;theme=tokyo-night" alt="Xsrazy's Activity Graph" />
+</main>
+</body>
+</html>
