@@ -228,6 +228,10 @@ Optional: `GITHUB_TOKEN`. When set, the stats, languages, and trophy cards use i
 - Trophy ranks and messages come from [github-profile-trophy](https://github.com/ryo-ma/github-profile-trophy) by ryo-ma.
 - Inspired by [github-readme-activity-graph](https://github.com/Ashutosh00710/github-readme-activity-graph) by Ashutosh00710, whose public instance this project replaces on the owner's profile.
 
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to run the project locally, add a theme or a card option, and open a pull request. Questions and ideas go in [Discussions](https://github.com/xsrazy/github-readme-stats/discussions): Q&A for help, Ideas for proposals, Show and tell for profiles using these cards.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
