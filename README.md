@@ -2,8 +2,8 @@
 
 A self-hosted GitHub card suite that renders SVG cards for profile READMEs: an activity graph, a stats card, a streak card, a top languages card, and a trophy card, all with deep theme and color customization.
 
-**Live:** https://github-readme-stats.xsrazy.web.id
-**Theme builder:** https://github-readme-stats.xsrazy.web.id/builder
+- **Live:** https://github-readme-stats.xsrazy.web.id
+- **Theme builder:** https://github-readme-stats.xsrazy.web.id/builder
 
 > **Note:** this project was previously served from `activity-graph.xsrazy.web.id`. That domain now permanently redirects to this one, so existing embeds keep working.
 
