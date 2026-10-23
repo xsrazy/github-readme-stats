@@ -229,6 +229,8 @@ Optional: `GITHUB_TOKEN`. When set, the stats, languages, and trophy cards use i
 
 ## Credits
 
+All of the code in this repository was written from scratch for this project: the SVG rendering, the card layouts, the theming engine, and the theme builder are original work, with zero runtime dependencies. What comes from other projects is data, palette values, rank thresholds, and parameter conventions, credited below.
+
 - Contribution data comes from [github-contributions-api](https://github.com/jogruber/github-contributions-api) by jogruber.
 - Theme palettes and the customization parameter conventions come from [github-readme-stats](https://github.com/anuraghazra/github-readme-stats) by anuraghazra.
 - Trophy ranks and messages come from [github-profile-trophy](https://github.com/ryo-ma/github-profile-trophy) by ryo-ma.
