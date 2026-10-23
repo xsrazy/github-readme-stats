@@ -1,4 +1,4 @@
-// Activity Graph API: renders a GitHub contribution activity graph as SVG.
+// GitHub Readme Stats: renders a GitHub contribution activity graph as SVG.
 // Data source: github-contributions-api (jogruber) v4, public JSON, no auth.
 // Usage: /graph?username=xsrazy&theme=tokyo-night&days=31
 // Customization: any theme from the suite catalog in lib/cards.js (the five
@@ -40,7 +40,7 @@ function esc(s) {
 
 async function fetchContributions(username) {
   const url = `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=last`;
-  const res = await fetch(url, { headers: { "User-Agent": "activity-graph/1.0" } });
+  const res = await fetch(url, { headers: { "User-Agent": "github-readme-stats/1.0" } });
   if (!res.ok) throw new Error(`contributions api ${res.status}`);
   const data = await res.json();
   const list = Array.isArray(data.contributions) ? data.contributions : [];

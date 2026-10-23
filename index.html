@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Activity Graph API</title>
-<meta name="description" content="Self-hosted GitHub contribution activity graph API that renders SVG charts for profile READMEs." />
+<title>GitHub Readme Stats</title>
+<meta name="description" content="GitHub Readme Stats: a self-hosted GitHub profile README card suite (activity graph, stats, streak, top languages, trophy) rendered as SVG cards." />
 <style>
   body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: #0d1117; color: #e6edf3; }
   main { max-width: 860px; margin: 0 auto; padding: 48px 20px 64px; }
@@ -17,11 +17,11 @@
 </head>
 <body>
 <main>
-  <h1>Activity Graph API</h1>
-  <p>A self-hosted GitHub contribution activity graph that renders as an SVG image, ready to embed in a profile README. No auth, no tracking, cached at the edge.</p>
+  <h1>GitHub Readme Stats</h1>
+  <p>A self-hosted suite of GitHub profile README cards (activity graph, stats, streak, top languages, trophy) rendered as SVG images, ready to embed in a profile README. No auth, no tracking, cached at the edge.</p>
   <p>Usage:</p>
   <pre><code>/graph?username=xsrazy&amp;theme=tokyo-night&amp;days=31</code></pre>
-  <p>Parameters: <code>username</code> (GitHub username), <code>theme</code> (148 themes, for example tokyo-night, github-dark, dracula, nord, rose_pine), <code>days</code> (7 to 90, default 31).</p>
+  <p>Parameters: <code>username</code> (GitHub username), <code>theme</code> (100 themes, for example tokyo-night, github-dark, dracula, nord, rose-pine), <code>days</code> (7 to 90, default 31).</p>
   <img src="/graph?username=xsrazy&amp;theme=tokyo-night" alt="Xsrazy's Activity Graph" />
   <p><strong>New: the <a href="/builder" style="color:#7aa2f7;">theme builder</a></strong> composes fully custom card URLs visually, with live preview and copy buttons. Every card also accepts <code>bg_color</code> (hex or gradient), <code>title_color</code>, <code>text_color</code>, <code>border_color</code>, <code>hide_border</code>, <code>border_radius</code>, <code>custom_title</code>, and <code>hide_title</code>.</p>
   <h2 style="font-size:22px;margin:36px 0 8px;">More cards</h2>
@@ -38,6 +38,19 @@
   <p><strong>Trophy card</strong> — achievement trophies with ranks (UNKNOWN, C, B, A, AA, AAA, S, SS, SSS) for stars, followers, contributions, pull requests, issues, public repos, and account age. Options: <code>column</code> (tiles per row) and <code>rank</code> (rank filter):</p>
   <pre><code>/trophy?username=xsrazy&amp;theme=tokyo-night</code></pre>
   <img src="/trophy?username=xsrazy&amp;theme=tokyo-night" alt="Xsrazy's GitHub Trophies" />
+  <h2 style="font-size:22px;margin:36px 0 8px;">Customization examples</h2>
+  <p>Custom colors on the stats card (<code>title_color</code>, <code>text_color</code>, <code>bg_color</code>, <code>border_color</code>):</p>
+  <pre><code>/stats?username=xsrazy&amp;title_color=ff6e96&amp;text_color=f8f8f2&amp;bg_color=282a36&amp;border_color=ff79c6</code></pre>
+  <img src="/stats?username=xsrazy&amp;title_color=ff6e96&amp;text_color=f8f8f2&amp;bg_color=282a36&amp;border_color=ff79c6" alt="Stats card with custom colors" />
+  <p>Gradient background (<code>bg_color=30,e96443,904e95</code>):</p>
+  <pre><code>/stats?username=xsrazy&amp;bg_color=30,e96443,904e95</code></pre>
+  <img src="/stats?username=xsrazy&amp;bg_color=30,e96443,904e95" alt="Stats card with gradient background" />
+  <p>Languages donut layout (<code>layout=donut</code>, <code>langs_count=8</code>):</p>
+  <pre><code>/languages?username=xsrazy&amp;layout=donut&amp;langs_count=8</code></pre>
+  <img src="/languages?username=xsrazy&amp;layout=donut&amp;langs_count=8" alt="Languages card with donut layout" />
+  <p>Trophy card with four tiles per row (<code>column=4</code>):</p>
+  <pre><code>/trophy?username=xsrazy&amp;column=4</code></pre>
+  <img src="/trophy?username=xsrazy&amp;column=4" alt="Trophy card with four tiles per row" />
 </main>
 </body>
 </html>

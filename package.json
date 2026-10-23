@@ -1,1 +1,1 @@
-{"description":"Self-hosted GitHub contribution activity graph API that renders SVG charts for profile READMEs.","license":"MIT","name":"activity-graph","private":true,"version":"1.0.0"}
+{"description":"GitHub Readme Stats: a self-hosted GitHub profile README card suite (activity graph, stats, streak, top languages, trophy) that renders SVG cards.","license":"MIT","name":"github-readme-stats","private":true,"version":"1.0.0"}

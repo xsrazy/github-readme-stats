@@ -1,22 +1,24 @@
-# Activity Graph API
+# GitHub Readme Stats
 
 A self-hosted GitHub card suite that renders SVG cards for profile READMEs: an activity graph, a stats card, a streak card, a top languages card, and a trophy card, all with deep theme and color customization.
 
-**Live:** https://activity-graph.xsrazy.web.id
-**Theme builder:** https://activity-graph.xsrazy.web.id/builder
+**Live:** https://github-readme-stats.xsrazy.web.id
+**Theme builder:** https://github-readme-stats.xsrazy.web.id/builder
 
-![Xsrazy's Activity Graph](https://activity-graph.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night)
+> **Note:** this project was previously served from `activity-graph.xsrazy.web.id`. That domain now permanently redirects to this one, so existing embeds keep working.
+
+![Xsrazy's Activity Graph](https://github-readme-stats.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night)
 
 ## About
 
-Activity Graph API draws a smooth area chart of a GitHub user's daily contributions over the last 7 to 90 days and serves it as a plain SVG image that can be embedded anywhere, including a GitHub profile README. It was built after the popular third-party activity graph widget went offline (its deployment was disabled), leaving a broken image on the profile. This version runs on infrastructure the owner controls, has zero runtime dependencies, and needs no authentication or API keys. The companion cards (stats, streak, languages, trophy) share the same theming system, so a whole profile can run on one self-hosted suite instead of four different third-party services.
+GitHub Readme Stats draws a smooth area chart of a GitHub user's daily contributions over the last 7 to 90 days and serves it as a plain SVG image that can be embedded anywhere, including a GitHub profile README. It was built after the popular third-party activity graph widget went offline (its deployment was disabled), leaving a broken image on the profile. This version runs on infrastructure the owner controls, has zero runtime dependencies, and needs no authentication or API keys. The companion cards (stats, streak, languages, trophy) share the same theming system, so a whole profile can run on one self-hosted suite instead of four different third-party services.
 
 ## Features
 
 - Five cards: activity graph, stats, streak, top languages, and trophies
-- 148 themes: the complete github-readme-stats theme catalog, this project's five original themes, and extra palettes such as the Catppuccin and Rose Pine families
+- 100 themes: the complete github-readme-stats theme catalog, this project's five original themes, and extra palettes such as the Catppuccin and Rose Pine families. Full gallery with live previews: [themes/README.md](themes/README.md)
 - Full custom colors on every card: per-element hex overrides, gradient and transparent backgrounds, following the parameter conventions popularized by github-readme-stats
-- A visual [theme builder](https://activity-graph.xsrazy.web.id/builder) with live preview and one-click copy of the final URL and Markdown embed
+- A visual [theme builder](https://github-readme-stats.xsrazy.web.id/builder) with live preview and one-click copy of the final URL and Markdown embed
 - Trophy card modeled on github-profile-trophy, with the same rank thresholds and rank messages
 - Languages card with three layouts (normal, compact, donut)
 - Edge caching (1 hour fresh for most cards, stale-while-revalidate) so profile page loads stay fast
@@ -25,7 +27,7 @@ Activity Graph API draws a smooth area chart of a GitHub user's daily contributi
 
 ## Architecture
 
-- **Runtime:** Vercel Functions (Node.js); functions in `api/` (`graph.js`, `stats.js`, `streak.js`, `languages.js`, `trophy.js`) sharing `lib/cards.js` for themes, data fetching, and SVG shells
+- **Runtime:** Vercel Functions (Node.js); functions in `api/` (`graph.js`, `stats.js`, `streak.js`, `languages.js`, `trophy.js`) sharing `lib/cards.js` for data fetching and SVG shells, with the theme catalog in `themes/themes.js` (gallery in `themes/README.md`)
 - **Routing:** `vercel.json` rewrites `/graph`, `/stats`, `/streak`, `/languages`, and `/trophy` to their functions, and `/builder` to the static builder page; `index.html` is a static landing page with live demos
 - **Data sources:** the public [github-contributions-api](https://github.com/jogruber/github-contributions-api) v4 endpoint (contribution calendar, no auth) and the GitHub REST API (profile, repos, search). All queries are public-only: search queries carry `is:public` and private repos are filtered out
 - **Rendering:** every SVG (path smoothing, gradient fills, donut charts, trophy tiles) is generated in code; nothing is stored
@@ -41,15 +43,142 @@ Activity Graph API draws a smooth area chart of a GitHub user's daily contributi
 | `/trophy` | Trophy card: ranked achievement tiles for stars, followers, contributions, PRs, issues, public repos, and account age |
 | `/builder` | Interactive theme builder page (HTML) |
 
-Example embeds:
+## Examples
+
+Every example below is followed by its rendered result.
+
+### Activity graph
 
 ```text
-https://activity-graph.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night&days=31
-https://activity-graph.xsrazy.web.id/stats?username=xsrazy&theme=dracula&hide=prs,issues
-https://activity-graph.xsrazy.web.id/streak?username=xsrazy&theme=nord&ring_color=88c0d0
-https://activity-graph.xsrazy.web.id/languages?username=xsrazy&layout=donut&langs_count=8
-https://activity-graph.xsrazy.web.id/trophy?username=xsrazy&theme=rose_pine&column=4
+https://github-readme-stats.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night&days=31
 ```
+
+![Activity graph example](https://github-readme-stats.xsrazy.web.id/graph?username=xsrazy&theme=tokyo-night&days=31)
+
+### Stats card
+
+```text
+https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=tokyo-night
+```
+
+![Stats card example](https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=tokyo-night)
+
+### Streak card
+
+```text
+https://github-readme-stats.xsrazy.web.id/streak?username=xsrazy&theme=tokyo-night
+```
+
+![Streak card example](https://github-readme-stats.xsrazy.web.id/streak?username=xsrazy&theme=tokyo-night)
+
+### Languages card
+
+```text
+https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&theme=tokyo-night
+```
+
+![Languages card example](https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&theme=tokyo-night)
+
+### Trophy card
+
+```text
+https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&theme=tokyo-night
+```
+
+![Trophy card example](https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&theme=tokyo-night)
+
+### Custom colors
+
+```text
+https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&title_color=ff6e96&text_color=f8f8f2&bg_color=282a36&border_color=ff79c6
+```
+
+![Custom colors example](https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&title_color=ff6e96&text_color=f8f8f2&bg_color=282a36&border_color=ff79c6)
+
+### Gradient background
+
+```text
+https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&bg_color=30,e96443,904e95
+```
+
+![Gradient background example](https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&bg_color=30,e96443,904e95)
+
+### No border, large corner radius
+
+```text
+https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=nord&hide_border=true&border_radius=20
+```
+
+![No border example](https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=nord&hide_border=true&border_radius=20)
+
+### Hiding stats rows
+
+```text
+https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&hide=prs,issues
+```
+
+![Hiding rows example](https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&hide=prs,issues)
+
+### Languages layouts
+
+Normal (default):
+
+```text
+https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&layout=normal
+```
+
+![Languages normal layout](https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&layout=normal)
+
+Compact:
+
+```text
+https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&layout=compact
+```
+
+![Languages compact layout](https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&layout=compact)
+
+Donut:
+
+```text
+https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&layout=donut&langs_count=8
+```
+
+![Languages donut layout](https://github-readme-stats.xsrazy.web.id/languages?username=xsrazy&layout=donut&langs_count=8)
+
+### Trophy options
+
+Four tiles per row:
+
+```text
+https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&column=4
+```
+
+![Trophy column example](https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&column=4)
+
+Only high ranks:
+
+```text
+https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&rank=SSS,SS,S
+```
+
+![Trophy rank filter example](https://github-readme-stats.xsrazy.web.id/trophy?username=xsrazy&rank=SSS,SS,S)
+
+### Themes
+
+Three of the 100 themes on the stats card:
+
+```text
+https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=dracula
+https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=gruvbox
+https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=rose-pine
+```
+
+![Dracula theme example](https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=dracula)
+
+![Gruvbox theme example](https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=gruvbox)
+
+![Rose Pine theme example](https://github-readme-stats.xsrazy.web.id/stats?username=xsrazy&theme=rose-pine)
+
 
 ## Customization
 
@@ -84,11 +213,13 @@ Every card accepts the parameters below. Priority is always: explicit parameter 
 | `/trophy` | `column` | Tiles per row; the SVG wraps and grows taller as needed. Default: all tiles in one row |
 | `/trophy` | `rank` | Comma list of ranks to show, for example `rank=SSS,SS,S` |
 
-### Themes (148)
+### Themes (100)
 
-algolia, ambient-gradient, ambient_gradient, apprentice, aura, aura-dark, aura_dark, ayu-dark, ayu-light, ayu-mirage, ayu_dark, ayu_light, ayu_mirage, bear, blue-green, blue-navy, blue_green, blue_navy, blueberry, buefy, calm, calm-pink, calm_pink, carbonfox, catppuccin-frappe, catppuccin-latte, catppuccin-macchiato, catppuccin-mocha, catppuccin_frappe, catppuccin_latte, catppuccin_macchiato, catppuccin_mocha, chartreuse-dark, chartreuse_dark, city-lights, city_lights, cobalt, cobalt2, codeSTACKr, darcula, dark, date-night, date_night, default, default-repocard, default_repocard, discord-old-blurple, discord_old_blurple, dracula, duskfox, everforest, everforest-light, everforest_light, flag-india, flag_india, flexoki, github, github-dark, github-dark-dimmed, github-light, github_dark, github_dark_dimmed, github_light, gotham, graywhite, great-gatsby, great_gatsby, gruvbox, gruvbox-light, gruvbox_light, highcontrast, holi, horizon, jolly, kacho-ga, kacho_ga, kanagawa-wave, kanagawa_wave, lackluster, maroongold, material-palenight, material_palenight, melange, merko, midnight-purple, midnight_purple, moltack, monokai, neon, nightfox, nightowl, noctis-minimus, noctis_minimus, nord, ocean-dark, ocean_dark, omni, one-dark-pro, one_dark_pro, onedark, outrun, panda, poimandres, prussian, radical, react, rose, rose-pine, rose-pine-dawn, rose-pine-moon, rose_pine, rose_pine_dawn, rose_pine_moon, shades-of-purple, shades_of_purple, shadow-blue, shadow-green, shadow-red, shadow_blue, shadow_green, shadow_red, slateorange, snazzy, solarized-dark, solarized-light, solarized_dark, solarized_light, swift, synthwave, synthwave_84, tokyo-night, tokyo-night-light, tokyo-night-storm, tokyo_night, tokyo_night_light, tokyo_night_storm, tokyonight, transparent, vision-friendly-dark, vision_friendly_dark, vitesse-dark, vitesse-light, vitesse_dark, vitesse_light, vue, vue-dark, vue_dark, yeblu
+The suite ships 100 canonical themes. Both spellings of every name work: `tokyo-night` and `tokyo_night` resolve to the same palette. Popular picks: `tokyo-night`, `github-dark`, `dracula`, `nord`, `gruvbox`, `onedark`, `catppuccin-mocha`, `rose-pine`, `synthwave_84`, and `transparent` (fully transparent background).
 
-The five original themes of this project (`tokyo-night`, `github-dark`, `react`, `radical`, `highcontrast`) keep their exact original palettes. The `transparent` theme has a fully transparent background, and `ambient_gradient` has a gradient background; both can be reproduced on any card with `bg_color`.
+The five original themes of this project (`tokyo-night`, `github-dark`, `react`, `radical`, `highcontrast`) keep their exact original palettes.
+
+**Full gallery with every palette and a live preview per theme: [themes/README.md](themes/README.md).**
 
 ## Trophy ranks
 
