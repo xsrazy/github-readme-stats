@@ -1,6 +1,8 @@
 // GitHub Readme Stats: renders a GitHub contribution activity graph as SVG.
 // Data source: github-contributions-api (jogruber) v4, public JSON, no auth.
 // Usage: /graph?username=xsrazy&theme=tokyo-night&days=31 (days: 7 to 365)
+// Size: w (default 800) and h (default 320) set the SVG canvas size,
+// e.g. w=700&h=200 renders the chart at 700x200.
 // Customization: any theme from the suite catalog in lib/cards.js (the five
 // original themes below keep priority and their exact values), plus
 // bg_color, title_color, text_color, border_color, line, point,
@@ -66,8 +68,7 @@ function smoothPath(pts) {
   return d;
 }
 
-function renderSVG({ username, days, theme, error, style = {} }) {
-  const W = 800, H = 320;
+function renderSVG({ username, days, theme, error, style = {}, W = 800, H = 320 }) {
   const t = theme;
   const padL = 46, padR = 16, padTop = 64, padBot = 34;
   const plotW = W - padL - padR;
@@ -159,16 +160,22 @@ module.exports = async (req, res) => {
   let daysN = parseInt(q.days, 10);
   if (!Number.isFinite(daysN)) daysN = 31;
   daysN = Math.min(365, Math.max(7, daysN));
+  let w = parseInt(q.w, 10);
+  if (!Number.isFinite(w)) w = 800;
+  w = Math.min(1600, Math.max(200, w));
+  let h = parseInt(q.h, 10);
+  if (!Number.isFinite(h)) h = 320;
+  h = Math.min(800, Math.max(100, h));
 
   let svg;
   try {
     const all = await fetchContributions(username);
     const days = all.slice(-daysN);
     if (!days.length) throw new Error("no data");
-    svg = renderSVG({ username, days, theme, error: false, style });
+    svg = renderSVG({ username, days, theme, error: false, style, W: w, H: h });
     res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
   } catch (e) {
-    svg = renderSVG({ username, days: [], theme, error: true, style });
+    svg = renderSVG({ username, days: [], theme, error: true, style, W: w, H: h });
     res.setHeader("Cache-Control", "public, s-maxage=300");
   }
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
